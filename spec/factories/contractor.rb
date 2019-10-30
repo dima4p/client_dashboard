@@ -2,8 +2,8 @@
 
 FactoryBot.define do
   factory :contractor do
-    first_name { 'First Name' }
-    last_name { 'Last Name' }
+    sequence(:first_name) {|n| "First_name#{format '%03d', n}" }
+    sequence(:last_name) {|n| "Last_name#{format '%03d', n}" }
     partner_company
   end
 end

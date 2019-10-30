@@ -31,8 +31,8 @@ class Employee < ApplicationRecord
   private
 
   def generate_token
-    begin
-      self.identifier = SimpleTokenGenerator::Generator.call(slices: 3, size_of_slice: 2)
-    end while self.class.exists?(identifier: identifier)
+    while identifier.blank? and self.class.exists?(identifier: identifier)
+      self.identifier = SimpleTokenGenerator::Generator.call
+    end
   end
 end

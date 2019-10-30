@@ -9,8 +9,8 @@ RSpec.describe "contractors/index", type: :view do
 
   it "renders a list of contractors" do
     render
-    assert_select 'tr>td', text: @contractor.first_name.to_s, count: 2
-    assert_select 'tr>td', text: @second_contractor.last_name.to_s, count: 2
+    assert_select 'tr>td', text: @contractor.first_name.to_s, count: 1
+    assert_select 'tr>td', text: @second_contractor.last_name.to_s, count: 1
   end
 
   it 'renders a table with columns' do

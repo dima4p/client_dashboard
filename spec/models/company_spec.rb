@@ -12,5 +12,12 @@
 require 'rails_helper'
 
 RSpec.describe Company, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  subject(:client) { create :company }
+
+  describe "validations" do
+    it { should be_valid }
+    it {should validate_presence_of :name}
+    it {should validate_presence_of :identity}
+    it {should validate_uniqueness_of :identity}
+  end
 end

@@ -29,8 +29,8 @@ class PartnerCompany < ApplicationRecord
   private
 
   def generate_token
-    begin
-      self.identity = SimpleTokenGenerator::Generator.call(prefix: 'P/')
-    end while self.class.exists?(identity: identity)
+    while identity.blank? and self.class.exists?(identity: identity)
+      self.identity = SimpleTokenGenerator::Generator.call
+    end
   end
 end

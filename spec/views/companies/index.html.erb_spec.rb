@@ -12,7 +12,8 @@ RSpec.describe 'companies/index', type: :view do
   it 'renders a list of companies' do
     render
     assert_select 'tr>td', text: @company.identity.to_s, count: 1
-    assert_select 'tr>td', text: @company.name.to_s, count: 2
+    assert_select 'tr>td', text: @company.name.to_s, count: 1
+    assert_select 'tr>td', text: @second_company.name.to_s, count: 1
     assert_select 'a[href=?]', employees_path(company_id: @company), count: 1
     assert_select 'a[href=?]', contractors_path(company_id: @company), count: 1
     assert_select 'a[href=?]', clients_path(company_id: @company), count: 1

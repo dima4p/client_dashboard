@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :partner_company do
-    name { 'Company Name' }
-    identity { 'P/ABCD' }
+    sequence(:name) {|n| "Company Name #{format '%03d', n}" }
+    sequence(:identity) {|n| "P/ABCD#{format '%03d', n}" }
   end
 end

@@ -16,11 +16,11 @@
 require 'rails_helper'
 
 RSpec.describe Client, type: :model do
-  it 'requires first name' do
-    expect(build(:client, first_name: nil)).to_not be_valid
-  end
+  subject(:client) { create :client }
 
-  it 'requires last name' do
-    expect(build(:client, last_name: nil)).to_not be_valid
+  describe "validations" do
+    it { should be_valid }
+    it {should validate_presence_of :first_name}
+    it {should validate_presence_of :last_name}
   end
 end
