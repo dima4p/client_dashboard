@@ -16,34 +16,35 @@ These instructions will get you a copy of the project up and running on your loc
 
 Clone git repository and run bundle install:
 
-```
-$ git clone git@github.com:nicosticht/client_dashboard.git
-$ bundle install
-```
+    $ git clone git@github.com:nicosticht/client_dashboard.git
+    $ bundle install
 
 Set up the database:
 
-```
-$ rails db:setup
-```
+    $ rails db:setup
+
 
 Run the rails server:
 
-```
-$ rails s
-```
+    $ rails s
 
 ## Running the tests
 
 To run the tests execute following statement:
 
-```
-$ bundle exec rake
-```
+    $ bundle exec rake
+
+Or you can use [guard](https://github.com/guard/guard)
+
+    $ bundle exec guard
+
+By default guard does not run all test at start. To trigger it just press <Enter>
+
+## TODO
+
+* Remove 1:N for Company
 
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.txt](LICENSE.txt) file for details
-
-
