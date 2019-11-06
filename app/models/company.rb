@@ -36,7 +36,7 @@ class Company < ApplicationRecord
   private
 
   def generate_token
-    while identity.blank? and self.class.exists?(identity: identity)
+    while identity.blank? or self.class.exists?(identity: identity)
       self.identity = SimpleTokenGenerator::Generator.call
     end
   end

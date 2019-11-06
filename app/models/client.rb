@@ -43,8 +43,8 @@ class Client < ApplicationRecord
   private
 
   def generate_token
-    begin
-      self.ctoken = SimpleTokenGenerator::Generator.call(slices: 3, size_of_slice: 2)
-    end while self.class.exists?(ctoken: ctoken)
+    while ctoken.blank? or self.class.exists?(ctoken: ctoken)
+      self.ctoken = SimpleTokenGenerator::Generator.call slices: 3, size_of_slice: 2
+    end
   end
 end

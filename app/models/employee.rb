@@ -33,7 +33,7 @@ class Employee < ApplicationRecord
   private
 
   def generate_token
-    while identifier.blank? and self.class.exists?(identifier: identifier)
+    while identifier.blank? or self.class.exists?(identifier: identifier)
       self.identifier = SimpleTokenGenerator::Generator.call
     end
   end

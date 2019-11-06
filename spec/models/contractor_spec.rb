@@ -13,7 +13,7 @@
 require 'rails_helper'
 
 RSpec.describe Contractor, type: :model do
-  subject(:client) { create :contractor }
+  subject(:contractor) { create :contractor }
 
   describe "validations" do
     it { should be_valid }
