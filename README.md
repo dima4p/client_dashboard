@@ -42,7 +42,7 @@ By default guard does not run all test at start. To trigger it just press <Enter
 
 ## TODO
 
-* Remove 1:N for Company
+* Eliminate 1:N for Company, Employee
 
 
 ## License
