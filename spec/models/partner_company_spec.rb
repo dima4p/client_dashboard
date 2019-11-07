@@ -21,6 +21,13 @@ RSpec.describe PartnerCompany, type: :model do
   end
 
   describe 'before_validation' do
+    context 'when :identity is blank' do
+      it 'changes the value of :identity to be present and unique' do
+        partner_company2 = build :partner_company, identity: ''
+        expect{partner_company2.valid?}.to change(partner_company2, :identity)
+      end
+    end
+
     context 'when :identity is not unique' do
       it 'changes the value of :identity to be unique' do
         partner_company2 = build :partner_company, identity: partner_company.identity

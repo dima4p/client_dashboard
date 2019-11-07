@@ -24,6 +24,13 @@ RSpec.describe Employee, type: :model do
   end
 
   describe 'before_validation' do
+    context 'when :identifier is blank' do
+      it 'changes the value of :identifier to be present and unique' do
+        employee2 = build :employee, identifier: ''
+        expect{employee2.valid?}.to change(employee2, :identifier)
+      end
+    end
+
     context 'when :identifier is not unique' do
       it 'changes the value of :identifier to be unique' do
         employee2 = build :employee, identifier: employee.identifier

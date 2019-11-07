@@ -25,6 +25,13 @@ RSpec.describe Client, type: :model do
   end
 
   describe 'before_validation' do
+    context 'when :ctoken is blank' do
+      it 'changes the value of :ctoken to be present and unique' do
+        client2 = build :client, ctoken: ''
+        expect{client2.valid?}.to change(client2, :ctoken)
+      end
+    end
+
     context 'when :ctoken is not unique' do
       it 'changes the value of :ctoken to be unique' do
         client2 = build :client, ctoken: client.ctoken
