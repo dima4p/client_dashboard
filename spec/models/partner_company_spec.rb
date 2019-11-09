@@ -12,7 +12,7 @@
 require 'rails_helper'
 
 RSpec.describe PartnerCompany, type: :model do
-  subject(:partner_company) { create :partner_company }
+  subject(:partner_company) {create :partner_company_with_contractors}
 
   describe "validations" do
     it { should be_valid }
@@ -40,6 +40,27 @@ RSpec.describe PartnerCompany, type: :model do
         partner_company2 = build :partner_company
         expect{partner_company2.valid?}.not_to change(partner_company2, :identity)
       end
+    end
+  end
+
+  describe 'associations' do
+    it {should have_many :clients}
+    it {should have_many :contractors}
+  end
+
+  describe '#contractor_ids' do
+    subject {partner_company.contractor_ids}
+
+    it 'returns the list of contractor ids associated with this partner_company' do
+      is_expected.to eq partner_company.contractors.map &:id
+    end
+  end
+
+  describe '#client_ids' do
+    subject {partner_company.client_ids}
+
+    it 'returns the list of clients ids associated with this partner_company' do
+      is_expected.to eq partner_company.clients.map &:id
     end
   end
 end

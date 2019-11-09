@@ -17,9 +17,9 @@ class Consultant < ApplicationRecord
 
   def full_name
     if contractor.present?
-      "#{contractor.first_name} #{contractor.last_name}"
+      contractor.full_name
     elsif employee.present?
-      "#{employee.first_name} #{employee.last_name}"
+      employee.full_name
     else
       "------"
     end

@@ -43,6 +43,8 @@ By default guard does not run all test at start. To trigger it just press <Enter
 ## TODO
 
 * Eliminate 1:N for Company, Employee
+* Add validation that Consultant **must have** either `contractor` or `employee`
+and not both.
 
 
 ## License

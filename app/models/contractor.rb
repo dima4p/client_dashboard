@@ -22,11 +22,15 @@ class Contractor < ApplicationRecord
     joins(:clients).where('clients.id' => client_ids)
   end
 
+  def client_ids
+    clients.pluck(:id)
+  end
+
   def clients_without_employees
     clients - Client.joins(:consultants).where('consultants.employee_id').uniq
   end
 
-  def client_ids
-    clients.pluck(:id)
+  def full_name
+    "#{first_name} #{last_name}"
   end
 end

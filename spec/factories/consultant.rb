@@ -1,7 +1,13 @@
 FactoryBot.define do
   factory :consultant do
     client
-    employee { nil }
-    contractor { nil }
+
+    factory :consultant_with_contractor do
+      contractor
+    end
+
+    factory :consultant_with_employee do
+      employee
+    end
   end
 end

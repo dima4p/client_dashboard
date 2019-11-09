@@ -16,7 +16,7 @@
 require 'rails_helper'
 
 RSpec.describe Client, type: :model do
-  subject(:client) { create :client }
+  subject(:client) {create :client}
 
   describe "validations" do
     it { should be_valid }
@@ -44,6 +44,106 @@ RSpec.describe Client, type: :model do
         client2 = build :client
         expect{client2.valid?}.not_to change(client2, :ctoken)
       end
+    end
+  end
+
+  describe 'associations' do
+    it {should have_many :consultants}
+
+    context 'with employees' do
+      subject(:client) {create :client_with_employees}
+
+      it {should have_many :employees}
+      it {should have_many :companies}
+
+      it 'should really have companies' do
+        expect(subject.companies.size).to be > 0
+      end
+    end
+
+    context 'with contractors' do
+      subject(:client) {create :client_with_contractors}
+
+      it {should have_many :contractors}
+      it {should have_many :partner_companies}
+
+      it 'should really have partner_companies' do
+        expect(subject.partner_companies.size).to be > 0
+      end
+    end
+  end
+
+  describe 'scope' do
+    describe ':for_given_employees' do
+      let(:employee1) { create :employee_with_clients }
+      let(:employee2) { create :employee_with_clients }
+      let(:employee3) { create :employee_with_clients }
+
+      subject {described_class.for_given_employees([employee1.id, employee2.id]).to_a}
+
+      it 'should inlude all clients related to the employees with the given ids' do
+        employee1.clients.each {|client| is_expected.to include(client)}
+        employee2.clients.each {|client| is_expected.to include(client)}
+      end
+
+      it 'should not inlude all clients related to other employees' do
+        employee3.clients.each {|client| is_expected.not_to include(client)}
+      end
+    end
+
+    describe ':for_company' do
+      let(:employee1) { create :employee_with_clients }
+      let(:employee2) { create :employee_with_clients }
+
+      subject {described_class.for_company(employee1.company_id).to_a}
+
+      it 'should inlude all clients related to the employees with the given ids' do
+        employee1.clients.each {|client| is_expected.to include(client)}
+      end
+
+      it 'should not inlude all clients related to other employees' do
+        employee2.clients.each {|client| is_expected.not_to include(client)}
+      end
+    end
+
+    describe ':for_given_contractors' do
+      let(:contractor1) { create :contractor_with_clients }
+      let(:contractor2) { create :contractor_with_clients }
+      let(:contractor3) { create :contractor_with_clients }
+
+      subject {described_class.for_given_contractors([contractor1.id, contractor2.id]).to_a}
+
+      it 'should inlude all clients related to the contractors with the given ids' do
+        contractor1.clients.each {|client| is_expected.to include(client)}
+        contractor2.clients.each {|client| is_expected.to include(client)}
+      end
+
+      it 'should not inlude all clients related to other contractors' do
+        contractor3.clients.each {|client| is_expected.not_to include(client)}
+      end
+    end
+
+    describe ':for_partner_company' do
+      let(:contractor1) { create :contractor_with_clients }
+      let(:contractor2) { create :contractor_with_clients }
+
+      subject {described_class.for_partner_company(contractor1.partner_company_id).to_a}
+
+      it 'should inlude all clients related to the contractors with the given ids' do
+        contractor1.clients.each {|client| is_expected.to include(client)}
+      end
+
+      it 'should not inlude all clients related to other contractors' do
+        contractor2.clients.each {|client| is_expected.not_to include(client)}
+      end
+    end
+  end
+
+  describe '#full_name' do
+    subject {client.full_name}
+
+    it 'returns the first_name and last_name joined with a space' do
+      is_expected.to eq [client.first_name, client.last_name].join ' '
     end
   end
 end

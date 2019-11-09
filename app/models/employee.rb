@@ -30,6 +30,10 @@ class Employee < ApplicationRecord
     clients.pluck(:id)
   end
 
+  def full_name
+    "#{first_name} #{last_name}"
+  end
+
   private
 
   def generate_token
