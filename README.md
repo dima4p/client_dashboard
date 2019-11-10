@@ -44,9 +44,12 @@ By default guard does not run all test at start. To trigger it just press <Enter
 
 * Add validation that Consultant **must have** either `contractor` or `employee`
 and not both.
-* Revise specs for html views
+* Revise specs for html and json views to extend them to be more percise
 * Move API to separate controller, though I am not sure it is required
 
+### Notes
+
+I have included to API all the features that are present in the original views.
 
 ## License
 
