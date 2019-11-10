@@ -1,5 +1,5 @@
-json.extract! @contractor, :id, :first_name, :last_name, :partner_company_id, :created_at, :updated_at
-json.partner_company do
-  json.extract! @contractor.partner_company, :id, :identity, :name
-end
+clients_with_employees = Client.with_employees
+
+json.partial! "contractors/contractor", contractor: @contractor,
+    clients_with_employees: clients_with_employees
 json.url contractor_url(@contractor, format: :json)

@@ -22,7 +22,6 @@ describe "companies/index.json.jbuilder", type: :view do
     contractors
     clients
     employees
-
   ]
 
   it "renders a list of companies as json with following attributes: #{attributes.join(', ')}" do
