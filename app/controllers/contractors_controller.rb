@@ -4,12 +4,11 @@ class ContractorsController < ApplicationController
   # GET /contractors
   # GET /contractors.json
   def index
+    @contractors = Contractor.with_partner_company_and_clients
     if params[:partner_company_id].present?
-      @contractors = Contractor.where(partner_company_id: params[:partner_company_id]).all
+      @contractors = @contractors.for_partner_company params[:partner_company_id]
     elsif params[:company_id].present?
-      @contractors = Contractor.for_given_clients(Company.where(id: params[:company_id]).first.client_ids).all
-    else
-      @contractors = Contractor.all
+      @contractors = @contractors.for_clients_of_company params[:company_id]
     end
   end
 

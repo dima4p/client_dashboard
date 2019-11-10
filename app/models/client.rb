@@ -35,6 +35,13 @@ class Client < ApplicationRecord
   scope :for_partner_company, -> (partner_company_id) do
     joins(:partner_companies).where('partner_companies.id' => partner_company_id)
   end
+  scope :with_consultants_and_companies, -> do
+    references(consultants: {contractor: [:partner_company], employee: [:company]})
+        .includes(consultants: {contractor: [:partner_company], employee: [:company]})
+  end
+  scope :with_employees, -> do
+    joins(:consultants).where('consultants.employee_id')
+  end
 
   def full_name
     "#{first_name} #{last_name}"

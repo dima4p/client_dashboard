@@ -4,7 +4,7 @@ class PartnerCompaniesController < ApplicationController
   # GET /partner_companies
   # GET /partner_companies.json
   def index
-    @partner_companies = PartnerCompany.all
+    @partner_companies = PartnerCompany.with_contractors_and_clients
   end
 
   # GET /partner_companies/1

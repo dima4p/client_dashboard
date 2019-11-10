@@ -21,6 +21,13 @@ class Company < ApplicationRecord
 
   before_validation :generate_token, on: :create
 
+  scope :with_employees_and_clients, -> do
+    references(:employees, :clients).includes(:employees, :clients)
+  end
+  scope :with_contractors, -> do
+    references(clients: [:contractors]).includes(clients: [:contractors])
+  end
+
   def employee_ids
     employees.pluck(:id)
   end
@@ -30,7 +37,7 @@ class Company < ApplicationRecord
   end
 
   def contractor_ids
-    Contractor.for_given_clients(client_ids).pluck(:id)
+    clients.map(&:contractors).flatten.uniq.map(&:id)
   end
 
   private

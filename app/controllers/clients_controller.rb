@@ -4,14 +4,13 @@ class ClientsController < ApplicationController
   # GET /clients
   # GET /clients.json
   def index
+    @clients = Client.with_consultants_and_companies
     if params[:company_id]
-      @clients = Client.for_company(params[:company_id]).all
+      @clients = @clients.for_company params[:company_id]
     elsif params[:partner_company_id]
-      @clients = Client.for_partner_company(params[:partner_company_id]).all
+      @clients = @clients.for_partner_company params[:partner_company_id]
     elsif params[:employee_id]
-      @clients = Client.for_given_employees(params[:employee_id]).all
-    else
-      @clients = Client.all
+      @clients = @clients.for_given_employees params[:employee_id]
     end
   end
 

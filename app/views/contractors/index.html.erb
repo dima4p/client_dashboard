@@ -1,3 +1,5 @@
+<% clients_with_employees = Client.with_employees %>
+
 <div class="container table-responsive">
   <h1>Contractors</h1>
   <table class="table table-hover table-sm">
@@ -18,13 +20,16 @@
           <td><%= contractor.first_name %></td>
           <td><%= contractor.last_name %></td>
           <td><%= contractor.partner_company.identity %></td>
-          <td><ul><% contractor.partner_company.clients.each do |client| %>
-           <li><%= link_to client.full_name, client_path(client) %></li>
-          <% end %>
+          <td><ul>
+            <% contractor.partner_company.clients.each do |client| %>
+              <li><%= link_to client.full_name, client_path(client) %></li>
+            <% end %>
           </ul></td>
-          <td><ul><% contractor.clients_without_employees.each do |client| %>
-           <li><%= link_to client.full_name, client_path(client) %></li>
-          <% end %>
+          <td><ul>
+            <% (contractor.clients - clients_with_employees)
+                  .each do |client| %>
+              <li><%= link_to client.full_name, client_path(client) %></li>
+            <% end %>
           </ul></td>
           <td><%= link_to 'Show', contractor %></td>
           <td><%= link_to 'Edit', edit_contractor_path(contractor) %></td>

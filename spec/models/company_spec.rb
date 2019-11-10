@@ -43,6 +43,35 @@ RSpec.describe Company, type: :model do
     end
   end
 
+  describe 'scope' do
+    describe ':with_employees_and_clients' do
+      let!(:client) {create :client_with_employees, employees_count: 3}
+      subject {described_class.with_employees_and_clients}
+
+      it "returns the ActiveRecord::Relation of #{described_class.name}" do
+        expect(subject).to be_an ActiveRecord::Relation
+        expect(subject.map(&:employees).flatten.uniq.size).to be 3
+        expect(subject.map(&:clients).flatten.uniq.size).to be 1
+      end
+    end
+
+    describe ':with_contractors' do
+      let(:client) {create :client_with_employees, employees_count: 3}
+      let!(:consultant1) {create :consultant_with_contractor, client: client}
+      let!(:consultant2) {create :consultant_with_contractor, client: client}
+
+      subject {described_class.with_contractors}
+
+      it "returns the ActiveRecord::Relation of #{described_class.name}" do
+        expect(subject).to be_an ActiveRecord::Relation
+
+        expect(subject.size).to be 3
+        expect(subject.map(&:clients).flatten.uniq.size).to be 1
+        expect(subject.map(&:clients).flatten.map(&:contractors).flatten.uniq.size).to be 2
+      end
+    end
+  end
+
   describe 'associations' do
     it {should have_many :employees}
     it {should have_many :clients}

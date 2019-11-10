@@ -4,10 +4,9 @@ class EmployeesController < ApplicationController
   # GET /employees
   # GET /employees.json
   def index
+    @employees = Employee.with_company_and_clients
     if params[:company_id].present?
-      @employees = Employee.where(company_id: params[:company_id]).all
-    else
-      @employees = Employee.all
+      @employees = @employees.for_company params[:company_id]
     end
   end
 
@@ -35,6 +34,7 @@ class EmployeesController < ApplicationController
         format.html { redirect_to @employee, notice: 'Employee was successfully created.' }
         format.json { render :show, status: :created, location: @employee }
       else
+        logger.info "EmployeesController@#{__LINE__}#create #{@employee.errors.messages}"
         format.html { render :new }
         format.json { render json: @employee.errors, status: :unprocessable_entity }
       end
@@ -49,6 +49,7 @@ class EmployeesController < ApplicationController
         format.html { redirect_to @employee, notice: 'Employee was successfully updated.' }
         format.json { render :show, status: :ok, location: @employee }
       else
+        logger.info "EmployeesController@#{__LINE__}#update #{@employee.errors.messages}"
         format.html { render :edit }
         format.json { render json: @employee.errors, status: :unprocessable_entity }
       end

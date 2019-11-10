@@ -18,6 +18,10 @@ class PartnerCompany < ApplicationRecord
 
   before_validation :generate_token, on: :create
 
+  scope :with_contractors_and_clients, -> do
+    references(:contractors, :clients).includes(:contractors, :clients)
+  end
+
   def client_ids
     clients.pluck(:id)
   end

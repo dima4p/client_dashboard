@@ -15,23 +15,24 @@ class Consultant < ApplicationRecord
   belongs_to :contractor, optional: true
   belongs_to :employee, optional: true
 
+  delegate :first_name, :last_name, to: :contractor, prefix: true, allow_nil: true
+  delegate :first_name, :last_name, to: :employee, prefix: true, allow_nil: true
+  delegate :partner_company_name, to: :contractor, prefix: true, allow_nil: true
+  delegate :company_name, to: :employee, prefix: true, allow_nil: true
+
+  def first_name
+    contractor_first_name || employee_first_name || '---'
+  end
+
+  def last_name
+    contractor_last_name || employee_last_name || '---'
+  end
+
   def full_name
-    if contractor.present?
-      contractor.full_name
-    elsif employee.present?
-      employee.full_name
-    else
-      "------"
-    end
+    "#{first_name} #{last_name}"
   end
 
   def company_name
-    if contractor.present?
-      contractor.partner_company.name
-    elsif employee.present?
-      employee.company.name
-    else
-      "------"
-    end
+    contractor_partner_company_name || employee_company_name || "------"
   end
 end

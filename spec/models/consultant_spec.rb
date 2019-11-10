@@ -39,6 +39,87 @@ RSpec.describe Consultant, type: :model do
     end
   end
 
+  describe '#contractor_partner_company_name' do
+    context 'when a contractor is present' do
+      subject {create :consultant_with_contractor}
+
+      it "returns then contractor's #partner_company.name" do
+        expect(subject.contractor_partner_company_name)
+            .to be subject.contractor.partner_company.name
+      end
+    end
+
+    context 'when contractor is not present' do
+      it 'returns nil' do
+        expect(subject.contractor_first_name).to be_nil
+      end
+    end
+  end
+
+  describe '#contractor_first_name' do
+    context 'when a contractor is present' do
+      subject {create :consultant_with_contractor}
+
+      it "returns then contractor's #first_name" do
+        expect(subject.contractor_first_name).to be subject.contractor.first_name
+      end
+    end
+
+    context 'when contractor is not present' do
+      it 'returns nil' do
+        expect(subject.contractor_first_name).to be_nil
+      end
+    end
+  end
+
+  describe '#contractor_last_name' do
+    context 'when a contractor is present' do
+      subject {create :consultant_with_contractor}
+
+      it "returns then contractor's #last_name" do
+        expect(subject.contractor_last_name).to be subject.contractor.last_name
+      end
+    end
+
+    context 'when contractor is not present' do
+      it 'returns nil' do
+        expect(subject.contractor_last_name).to be_nil
+      end
+    end
+  end
+
+  describe '#employee_first_name' do
+    context 'when a employee is present' do
+      subject {create :consultant_with_employee}
+
+      it "returns then employee's #first_name" do
+        expect(subject.employee_first_name).to be subject.employee.first_name
+      end
+    end
+
+    context 'when employee is not present' do
+      it 'returns nil' do
+        expect(subject.employee_first_name).to be_nil
+      end
+    end
+  end
+
+  describe '#employee_last_name' do
+    context 'when a employee is present' do
+      subject {create :consultant_with_employee}
+
+      it "returns then employee's #last_name" do
+        expect(subject.employee_last_name).to be subject.employee.last_name
+      end
+    end
+
+    context 'when employee is not present' do
+      it 'returns nil' do
+        expect(subject.employee_last_name).to be_nil
+      end
+    end
+  end
+
   describe '#full_name' do
     context 'when contractor is present' do
       subject {create :consultant_with_contractor}
@@ -60,7 +141,7 @@ RSpec.describe Consultant, type: :model do
 
     context 'when not contractor nor employee is present' do
       it 'returns "------"' do
-        expect(subject.full_name).to eq "------"
+        expect(subject.full_name).to eq "--- ---"
       end
     end
   end

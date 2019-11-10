@@ -53,12 +53,35 @@ RSpec.describe Employee, type: :model do
   end
 
   describe 'scope' do
+    describe ':for_company' do
+      let(:comany1) {create :company_with_employees}
+      let(:comany2) {create :company_with_employees}
+
+      subject {described_class.for_company(comany1.id)}
+
+      it "returns the ActiveRecord::Relation of #{described_class.name}" do
+        is_expected.to be_an ActiveRecord::Relation
+      end
+
+      it 'should inlude all employees related to the comany with the given ids' do
+        comany1.employees.each {|employee| is_expected.to include(employee)}
+      end
+
+      it 'should not inlude all employees related to other comany' do
+        comany2.employees.each {|employee| is_expected.not_to include(employee)}
+      end
+    end
+
     describe ':for_given_clients' do
       let(:client1) { create :client_with_employees }
       let(:client2) { create :client_with_employees }
       let(:client3) { create :client_with_employees }
 
-      subject {described_class.for_given_clients([client1.id, client2.id]).to_a}
+      subject {described_class.for_given_clients([client1.id, client2.id])}
+
+      it "returns the ActiveRecord::Relation of #{described_class.name}" do
+        is_expected.to be_an ActiveRecord::Relation
+      end
 
       it 'should inlude all employees related to the client with the given ids' do
         client1.employees.each {|employee| is_expected.to include(employee)}
@@ -67,6 +90,20 @@ RSpec.describe Employee, type: :model do
 
       it 'should not inlude all employees related to other client' do
         client3.employees.each {|employee| is_expected.not_to include(employee)}
+      end
+    end
+
+    describe ':with_company_and_clients' do
+      let!(:employee) {create :employee_with_clients}
+
+      subject {described_class.with_company_and_clients}
+
+      it "returns the ActiveRecord::Relation of #{described_class.name}" do
+        is_expected.to be_an ActiveRecord::Relation
+      end
+
+      it 'returns the list of Employees' do
+        is_expected.to eq [employee]
       end
     end
   end
@@ -84,6 +121,12 @@ RSpec.describe Employee, type: :model do
 
     it 'returns the first_name and last_name joined with a space' do
       is_expected.to eq [employee.first_name, employee.last_name].join ' '
+    end
+  end
+
+  describe '#company_name' do
+    it 'returns the company.name' do
+      expect(subject.company_name).to be subject.company.name
     end
   end
 end

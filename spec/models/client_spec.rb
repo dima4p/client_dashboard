@@ -79,7 +79,11 @@ RSpec.describe Client, type: :model do
       let(:employee2) { create :employee_with_clients }
       let(:employee3) { create :employee_with_clients }
 
-      subject {described_class.for_given_employees([employee1.id, employee2.id]).to_a}
+      subject {described_class.for_given_employees([employee1.id, employee2.id])}
+
+      it "returns the ActiveRecord::Relation of #{described_class.name}" do
+        is_expected.to be_an ActiveRecord::Relation
+      end
 
       it 'should inlude all clients related to the employees with the given ids' do
         employee1.clients.each {|client| is_expected.to include(client)}
@@ -95,7 +99,11 @@ RSpec.describe Client, type: :model do
       let(:employee1) { create :employee_with_clients }
       let(:employee2) { create :employee_with_clients }
 
-      subject {described_class.for_company(employee1.company_id).to_a}
+      subject {described_class.for_company(employee1.company_id)}
+
+      it "returns the ActiveRecord::Relation of #{described_class.name}" do
+        is_expected.to be_an ActiveRecord::Relation
+      end
 
       it 'should inlude all clients related to the employees with the given ids' do
         employee1.clients.each {|client| is_expected.to include(client)}
@@ -111,7 +119,11 @@ RSpec.describe Client, type: :model do
       let(:contractor2) { create :contractor_with_clients }
       let(:contractor3) { create :contractor_with_clients }
 
-      subject {described_class.for_given_contractors([contractor1.id, contractor2.id]).to_a}
+      subject {described_class.for_given_contractors([contractor1.id, contractor2.id])}
+
+      it "returns the ActiveRecord::Relation of #{described_class.name}" do
+        is_expected.to be_an ActiveRecord::Relation
+      end
 
       it 'should inlude all clients related to the contractors with the given ids' do
         contractor1.clients.each {|client| is_expected.to include(client)}
@@ -127,7 +139,11 @@ RSpec.describe Client, type: :model do
       let(:contractor1) { create :contractor_with_clients }
       let(:contractor2) { create :contractor_with_clients }
 
-      subject {described_class.for_partner_company(contractor1.partner_company_id).to_a}
+      subject {described_class.for_partner_company(contractor1.partner_company_id)}
+
+      it "returns the ActiveRecord::Relation of #{described_class.name}" do
+        is_expected.to be_an ActiveRecord::Relation
+      end
 
       it 'should inlude all clients related to the contractors with the given ids' do
         contractor1.clients.each {|client| is_expected.to include(client)}
@@ -135,6 +151,37 @@ RSpec.describe Client, type: :model do
 
       it 'should not inlude all clients related to other contractors' do
         contractor2.clients.each {|client| is_expected.not_to include(client)}
+      end
+    end
+
+    describe ':with_consultants_and_companies' do
+      let!(:contractor) {create :contractor_with_clients, clients_count: 1}
+      let(:client1) {contractor.clients.firt}
+      let!(:employee) {create :employee_with_clients, clients_count: 1}
+      let(:client2) {employee.clients.firt}
+
+      subject {described_class.with_consultants_and_companies}
+
+      it "returns the ActiveRecord::Relation of #{described_class.name} of proper size" do
+        is_expected.to be_an ActiveRecord::Relation
+        expect(subject.map(&:consultants).flatten.size).to be 2
+      end
+    end
+
+    describe ':with_employees' do
+      let!(:contractor) {create :contractor_with_clients, clients_count: 1}
+      let(:client1) {contractor.clients.firt}
+      let!(:employee) {create :employee_with_clients, clients_count: 1}
+      let(:client2) {employee.clients.firt}
+
+      subject {described_class.with_employees}
+
+      it "returns the ActiveRecord::Relation of #{described_class.name}" do
+        is_expected.to be_an ActiveRecord::Relation
+      end
+
+      it 'contains only clients that have an employee' do
+        expect(subject.size).to be 1
       end
     end
   end
