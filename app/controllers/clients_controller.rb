@@ -12,9 +12,8 @@ class ClientsController < ApplicationController
     elsif params[:employee_id]
       @clients = @clients.for_given_employees params[:employee_id]
     end
-    logger.debug "ClientsController@#{__LINE__}#index #{params}" if logger.debug?
-    @clients = @clients.page(params[:page] || 0)
-    @clients = @clients.per(params[:per_page]) if params[:per_page].present?
+    @clients = @clients.page(params[:page]) unless params[:per_page].presence == "0"
+    @clients = @clients.per(params[:per_page]) if params[:per_page].presence.to_i > 0
   end
 
   # GET /clients/1

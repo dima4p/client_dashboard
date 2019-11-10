@@ -5,8 +5,8 @@ class CompaniesController < ApplicationController
   # GET /companies.json
   def index
     @companies = Company.with_employees_and_clients.with_contractors
-    @companies = @companies.page(params[:page] || 0)
-    @companies = @companies.per(params[:per_page]) if params[:per_page].present?
+    @companies = @companies.page(params[:page]) unless params[:per_page].presence == "0"
+    @companies = @companies.per(params[:per_page]) if params[:per_page].presence.to_i > 0
   end
 
   # GET /companies/1

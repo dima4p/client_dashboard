@@ -5,8 +5,8 @@ class PartnerCompaniesController < ApplicationController
   # GET /partner_companies.json
   def index
     @partner_companies = PartnerCompany.with_contractors_and_clients
-    @partner_companies = @partner_companies.page(params[:page] || 0)
-    @partner_companies = @partner_companies.per(params[:per_page]) if params[:per_page].present?
+    @partner_companies = @partner_companies.page(params[:page]) unless params[:per_page].presence == "0"
+    @partner_companies = @partner_companies.per(params[:per_page]) if params[:per_page].presence.to_i > 0
   end
 
   # GET /partner_companies/1

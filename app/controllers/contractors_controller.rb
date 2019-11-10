@@ -10,8 +10,8 @@ class ContractorsController < ApplicationController
     elsif params[:company_id].present?
       @contractors = @contractors.for_clients_of_company params[:company_id]
     end
-    @contractors = @contractors.page(params[:page] || 0)
-    @contractors = @contractors.per(params[:per_page]) if params[:per_page].present?
+    @contractors = @contractors.page(params[:page]) unless params[:per_page].presence == "0"
+    @contractors = @contractors.per(params[:per_page]) if params[:per_page].presence.to_i > 0
   end
 
   # GET /contractors/1

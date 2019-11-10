@@ -8,8 +8,8 @@ class EmployeesController < ApplicationController
     if params[:company_id].present?
       @employees = @employees.for_company params[:company_id]
     end
-    @employees = @employees.page(params[:page] || 0)
-    @employees = @employees.per(params[:per_page]) if params[:per_page].present?
+    @employees = @employees.page(params[:page]) unless params[:per_page].presence == "0"
+    @employees = @employees.per(params[:per_page]) if params[:per_page].presence.to_i > 0
   end
 
   # GET /employees/1

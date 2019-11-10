@@ -28,7 +28,9 @@
       <% end %>
     </tbody>
   </table>
-  <%= paginate @clients %>
+  <% if @clients.respond_to? :total_pages %>
+    <%= paginate @clients %>
+  <% end %>
 </div>
 
 <div class="container">
