@@ -3,20 +3,21 @@
 require 'rails_helper'
 
 RSpec.describe 'companies/index', type: :view do
+  let!(:company1) {create :company}
+  let!(:company2) {create :company}
+
   before(:each) do
-    @company = create(:company)
-    @second_company = create(:company)
-    assign(:companies, [@company, @second_company])
+    assign(:companies, Company.page(0))
   end
 
   it 'renders a list of companies' do
     render
-    assert_select 'tr>td', text: @company.identity.to_s, count: 1
-    assert_select 'tr>td', text: @company.name.to_s, count: 1
-    assert_select 'tr>td', text: @second_company.name.to_s, count: 1
-    assert_select 'a[href=?]', employees_path(company_id: @company), count: 1
-    assert_select 'a[href=?]', contractors_path(company_id: @company), count: 1
-    assert_select 'a[href=?]', clients_path(company_id: @company), count: 1
+    assert_select 'tr>td', text: company1.identity.to_s, count: 1
+    assert_select 'tr>td', text: company1.name.to_s, count: 1
+    assert_select 'tr>td', text: company2.name.to_s, count: 1
+    assert_select 'a[href=?]', employees_path(company_id: company1), count: 1
+    assert_select 'a[href=?]', contractors_path(company_id: company1), count: 1
+    assert_select 'a[href=?]', clients_path(company_id: company1), count: 1
   end
 
   it 'renders a table with columns' do

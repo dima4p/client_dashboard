@@ -44,6 +44,7 @@ By default guard does not run all test at start. To trigger it just press <Enter
 
 * Add validation that Consultant **must have** either `contractor` or `employee`
 and not both.
+* Revise specs for views
 
 
 ## License
