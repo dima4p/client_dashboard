@@ -27,7 +27,9 @@ class Contractor < ApplicationRecord
   end
 
   def clients_without_employees
-    clients - Client.joins(:consultants).where('consultants.employee_id').uniq
+    clients.where.not(
+      id: Client.joins(:consultants).where('consultants.employee_id').select(:id).distinct
+    )
   end
 
   def full_name
